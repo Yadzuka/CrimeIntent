@@ -19,6 +19,7 @@ import com.example.crime.activities.CrimePagerActivity;
 import com.example.crime.models.Crime;
 import com.example.crime.models.CrimeLab;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class CrimeListFragment extends Fragment {
@@ -107,7 +108,7 @@ public class CrimeListFragment extends Fragment {
         public void bindCrime(Crime crime) {
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
-            mDateTextView.setText(mCrime.getDate().toString());
+            mDateTextView.setText(getDate(mCrime));
             mSolvedCheckBox.setChecked(mCrime.isSolved());
         }
 
@@ -116,5 +117,10 @@ public class CrimeListFragment extends Fragment {
             Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
+    }
+    private String getDate(Crime mCrime) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String date = sdf.format(mCrime.getDate());
+        return (date);
     }
 }
