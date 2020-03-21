@@ -18,16 +18,19 @@ public class CrimeLab {
     }
     private CrimeLab(Context context) {
         mCrimes = new ArrayList<>();
-        for(int i = 0; i < 100; i++){
-            Crime newCrime = new Crime();
-            newCrime.setTitle("Crime #" + i);
-            newCrime.setSolved(i % 2 == 0);
-            mCrimes.add(newCrime);
-        }
     }
 
     public List<Crime> getCrimes() {
         return mCrimes;
+    }
+
+    public void addCrime(Crime crime){
+        mCrimes.add(crime);
+    }
+
+    public void deleteCrime(UUID crimeId) {
+        Crime crime = getCrime(crimeId);
+        mCrimes.remove(crime);
     }
 
     public Crime getCrime(UUID id) {
