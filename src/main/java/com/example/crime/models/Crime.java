@@ -1,7 +1,5 @@
 package com.example.crime.models;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -50,7 +48,11 @@ public class Crime {
     }
 
     public Crime() {
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID());
+    }
+
+    public Crime(UUID id) {
+        mId = id;
         mDate = new Date();
         mTime = new Date();
     }

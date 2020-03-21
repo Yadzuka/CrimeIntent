@@ -105,14 +105,21 @@ public class CrimeFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.delete_crime:
                 CrimeLab crimeLab = CrimeLab.get(getActivity());
-                crimeLab.deleteCrime(mCrime.getId());
-
+                crimeLab.deleteCrime(mCrime);
                 Intent intent = new Intent(getActivity(), CrimeListActivity.class);
                 startActivity(intent);
                 return  true;
             default:
                 return  super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        CrimeLab.get(getActivity())
+                .updateCrime(mCrime);
     }
 
     @Nullable
