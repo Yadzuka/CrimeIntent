@@ -10,6 +10,15 @@ public class Crime {
     private Date mDate;
     private Date mTime;
     private boolean mSolved;
+    private String mSuspect;
+
+    public String getSuspect() {
+        return mSuspect;
+    }
+
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
+    }
 
     public UUID getId() {
         return mId;
