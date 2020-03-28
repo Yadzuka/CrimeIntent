@@ -56,6 +56,10 @@ public class Crime {
         mTime = time;
     }
 
+    public String getPhotoFilename() {
+        return "IMG_" + getId().toString() + ".jpg";
+    }
+
     public Crime() {
         this(UUID.randomUUID());
     }
