@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -19,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -54,6 +56,7 @@ public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final String DIALOG_TIME = "DialogTime";
+    private static final String DIALOG_IMAGE = "DialogImage";
 
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_TIME = 1;
@@ -70,6 +73,9 @@ public class CrimeFragment extends Fragment {
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
     private File mPhotoFile;
+    private ViewTreeObserver mPhotoTreeObserver;
+
+    private Point mPhotoViewSize;
 
     public static CrimeFragment newInstance(UUID crimeId) {
         Bundle args = new Bundle();
@@ -273,13 +279,27 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        mPhotoView = v.findViewById(R.id.crime_photo);
+        mPhotoView = (ImageView) v.findViewById(R.id.crime_photo);
+
+        // On image click, open zoomed image dialog
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent viewFullPhotoIntent = new Intent();
-                viewFullPhotoIntent.putExtra("IMAGE", mPhotoFile.getPath());
-                startActivity(viewFullPhotoIntent);
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getFragmentManager();
+                ImageDisplayFragment fragment = ImageDisplayFragment.newInstance(mPhotoFile);
+                fragment.show(fragmentManager, DIALOG_IMAGE);
+            }
+        });
+
+        mPhotoTreeObserver = mPhotoView.getViewTreeObserver();
+        mPhotoTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                mPhotoView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                mPhotoViewSize = new Point();
+                mPhotoViewSize.set(mPhotoView.getWidth(), mPhotoView.getHeight());
+
+                updatePhotoView();
             }
         });
 
