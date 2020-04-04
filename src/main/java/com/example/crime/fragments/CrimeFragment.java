@@ -241,7 +241,6 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        mPhotoView = v.findViewById(R.id.crime_photo);
         mPhotoButton = v.findViewById(R.id.crime_camera);
 
         final Intent captureImage = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -271,6 +270,16 @@ public class CrimeFragment extends Fragment {
                     Log.e(CAMERA_ERROR_TAG, ex.toString());
                 }
 
+            }
+        });
+
+        mPhotoView = v.findViewById(R.id.crime_photo);
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewFullPhotoIntent = new Intent();
+                viewFullPhotoIntent.putExtra("IMAGE", mPhotoFile.getPath());
+                startActivity(viewFullPhotoIntent);
             }
         });
 
